@@ -1,0 +1,24 @@
+[project]
+name = "wordhuntsolver"
+version = "0.0.1"
+authors = [
+  { name="Thomas Zachary", email="gruozachary@proton.me" },
+]
+description = "Solver for a word game"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "packaging==23.2",
+    "pillow==10.2.0",
+    "practicallan @ git+https://github.com/gruozachary/practicallan.git@81a21fcbf32c7c8af6a2418f80b40d3fd772f1df",
+    "pytesseract==0.3.10"
+]
+
+[project.urls]
+Homepage = "https://github.com/gruozachary/wordhuntsolver"
+Issues = "https://github.com/gruozachary/wordhuntsolver/issues"
