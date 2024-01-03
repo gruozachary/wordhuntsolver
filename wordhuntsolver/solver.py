@@ -1,5 +1,6 @@
 """Contains the "Solver" class"""
 
+from typing import Generator
 import PIL.Image
 import practicallan
 from wordhuntsolver.ocr_image import OCRImage
@@ -20,13 +21,15 @@ class Solver:
         self.ocr_image = OCRImage(image)
         self.pather = Pather(self.ocr_image.get_character_centres(), image)
 
-    # TODO: type hint generator?
-    def drawn_paths(self):
+    def drawn_paths(self) -> Generator[PIL.Image.Image, None, None]:
         """A generator that yields the drawn path images"""
 
         word_paths = practicallan.solve(self.word_list, self.ocr_image.get_chars())
         word_paths.sort(key=lambda x: len(x.word))
         word_paths.reverse()
 
+        drawn_words = set()
         for word_path in word_paths:
-            yield self.pather.draw_path(word_path)
+            if not word_path.word in drawn_words:
+                yield self.pather.draw_path(word_path)
+                drawn_words.add(word_path.word)
