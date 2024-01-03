@@ -2,8 +2,11 @@
 
 import sys
 import tomllib
+import tkinter as tk
 import PIL.Image
 import pytesseract
+from wordhuntsolver.gui.controller import Controller
+from wordhuntsolver.gui.view import View
 from wordhuntsolver.solver import Solver
 
 def main():
@@ -22,11 +25,14 @@ def main():
         data = tomllib.load(file)
         pytesseract.pytesseract.tesseract_cmd = data["tesseract"]["command"]
 
+    root = tk.Tk()
+
+    view = View(root)
     solver = Solver(image, word_list)
 
-    for path_image in solver.drawn_paths():
-        path_image.show()
-        input()
+    Controller(solver, view)
+
+    root.mainloop()
 
 
 if __name__ == "__main__":
