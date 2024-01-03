@@ -1,7 +1,9 @@
 """Main"""
 
 import sys
+import tomllib
 import PIL.Image
+import pytesseract
 from wordhuntsolver.solver import Solver
 
 def main():
@@ -15,6 +17,10 @@ def main():
     word_list = None
     with open(word_list_path, encoding="UTF-8") as file:
         word_list = file.read().split("\n")
+
+    with open("config.toml", "rb") as file:
+        data = tomllib.load(file)
+        pytesseract.pytesseract.tesseract_cmd = data["tesseract"]["command"]
 
     solver = Solver(image, word_list)
 
