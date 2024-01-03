@@ -14,7 +14,6 @@ class OCRImage:
     def __init__(self, image: PIL.Image.Image):
         greyscale = image.convert("L")
         self.image = greyscale.point(lambda x: 0 if x < 10 else 255)
-        self.image.show()
 
     def get_character_centres(self) -> list[list[tuple[int, int]]]:
         """Returns a 2 dimensional array mapping path coordinates to actual image coordinates"""
