@@ -1,9 +1,6 @@
 """Contains "Controller" class for GUI"""
 
-from typing import Generator
-
 import PIL.Image
-from PIL.Image import Image
 
 from wordhuntsolver.gui.view import View
 from wordhuntsolver.solver import Solver

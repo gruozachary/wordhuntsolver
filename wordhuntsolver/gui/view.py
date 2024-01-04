@@ -1,8 +1,8 @@
 """Contains "View" class for GUI"""
 
 import tkinter as tk
-import PIL.Image
-import PIL.ImageTk
+from PIL.Image import Image
+from PIL.ImageTk import PhotoImage
 
 class View:
     """The MVC view for the GUI"""
@@ -11,7 +11,7 @@ class View:
     photo_label: tk.Label
     next_button: tk.Button
     word_label: tk.Label
-    image_ref: PIL.ImageTk.PhotoImage
+    image_ref: PhotoImage
 
     def __init__(self, root: tk.Tk):
         self.root = root
@@ -26,12 +26,12 @@ class View:
         self.word_label.pack()
         self.next_button.pack()
 
-    def set_image(self, image: PIL.Image.Image, word: str):
+    def set_image(self, image: Image, word: str):
         """Changes the image displayed on the GUI"""
 
         resized = image.resize((250, 250))
 
-        photo = PIL.ImageTk.PhotoImage(resized)
+        photo = PhotoImage(resized)
 
         self.word_label.config(text=word)
         self.photo_label.config(image=photo)

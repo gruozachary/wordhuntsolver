@@ -1,7 +1,7 @@
 """Contains the "OCRImage" class"""
 
 from itertools import batched
-import PIL.Image
+from PIL.Image import Image
 import pytesseract
 
 class OCRImage:
@@ -9,9 +9,9 @@ class OCRImage:
 
     _CONFIG = "--oem 3 --psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    image: PIL.Image.Image
+    image: Image
 
-    def __init__(self, image: PIL.Image.Image):
+    def __init__(self, image: Image):
         greyscale = image.convert("L")
         self.image = greyscale.point(lambda x: 0 if x < 10 else 255)
 
