@@ -1,7 +1,7 @@
 """Contains the "Solver" class"""
 
 from typing import Generator
-import PIL.Image
+from PIL.Image import Image
 import practicallan
 from wordhuntsolver.ocr_image import OCRImage
 from wordhuntsolver.pather import Pather
@@ -10,26 +10,47 @@ from wordhuntsolver.pather import Pather
 class Solver:
     """A class that can solve the "Word Hunt" game"""
 
-    image: PIL.Image.Image
+    _image: Image
+    _ocr_image: OCRImage
+    _cached_generator: Generator[tuple[str, Image], None, None] | None = None
+    _pather: Pather
+
     word_list: list[str]
-    pather: Pather
-    ocr_image: OCRImage
 
-    def __init__(self, image: PIL.Image.Image, word_list: list[str]):
-        self.image = image
-        self.word_list = word_list
-        self.ocr_image = OCRImage(image)
-        self.pather = Pather(self.ocr_image.get_character_centres(), image)
+    def __init__(self, pather: Pather):
+        self._pather = pather
 
-    def drawn_paths(self) -> Generator[tuple[str, PIL.Image.Image], None, None]:
-        """A generator that yields the drawn path images"""
+    def set_image(self, image: Image):
+        """Sets the image that the solver uses"""
 
-        word_paths = practicallan.solve(self.word_list, self.ocr_image.get_chars())
+        self._image = image
+        self._ocr_image = OCRImage(image)
+        self._pather.image = image
+        self._pather.character_centres = self._ocr_image.get_character_centres()
+
+    def get_image(self) -> Image:
+        return self._image
+
+    def _generate(self) -> Generator[tuple[str, Image], None, None]:
+        word_paths = practicallan.solve(self.word_list, self._ocr_image.get_chars())
         word_paths.sort(key=lambda x: len(x.word))
         word_paths.reverse()
 
         drawn_words = set()
         for word_path in word_paths:
             if not word_path.word in drawn_words:
-                yield (word_path.word, self.pather.draw_path(word_path))
+                yield (word_path.word, self._pather.draw_path(word_path))
                 drawn_words.add(word_path.word)
+
+    def solve(self):
+        """Solves the game"""
+
+        self._cached_generator = self._generate()
+
+    def get_pathed_images(self) -> Generator[tuple[str, Image], None, None]:
+        """Fetches the images with paths drawn on them"""
+
+        if not self._cached_generator:
+            self.solve()
+
+        return self._cached_generator

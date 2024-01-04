@@ -12,10 +12,6 @@ class Pather:
     character_centres: list[list[tuple[int, int]]]
     image: PIL.Image.Image
 
-    def __init__(self, character_centres: list[list[tuple[int, int]]], image: PIL.Image.Image):
-        self.character_centres = character_centres
-        self.image = image
-
     def draw_path(self, path: WordPath) -> PIL.Image.Image:
         """Returns an image with a path drawn over it"""
 

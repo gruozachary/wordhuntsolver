@@ -7,6 +7,7 @@ import PIL.Image
 import pytesseract
 from wordhuntsolver.gui.controller import Controller
 from wordhuntsolver.gui.view import View
+from wordhuntsolver.pather import Pather
 from wordhuntsolver.solver import Solver
 
 def main():
@@ -28,7 +29,9 @@ def main():
     root = tk.Tk()
 
     view = View(root)
-    solver = Solver(image, word_list)
+    solver = Solver(Pather())
+    solver.set_image(image)
+    solver.word_list = word_list
 
     Controller(solver, view)
 

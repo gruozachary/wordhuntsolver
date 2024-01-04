@@ -17,9 +17,9 @@ class Controller:
     def __init__(self, solver: Solver, view: View):
         self.solver = solver
         self.view = view
-        self.drawn_images = solver.drawn_paths()
+        self.drawn_images = solver.get_pathed_images()
 
-        self.view.set_image(self.solver.image, "")
+        self.view.set_image(self.solver.get_image(), "")
         self.view.on_next(self._load_next)
 
     def _load_next(self):
