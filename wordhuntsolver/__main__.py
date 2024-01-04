@@ -3,7 +3,6 @@
 import sys
 import tomllib
 import tkinter as tk
-import PIL.Image
 import pytesseract
 from wordhuntsolver.gui.controller import Controller
 from wordhuntsolver.gui.view import View
@@ -16,12 +15,6 @@ def main():
     image_path = sys.argv[1]
     word_list_path = sys.argv[2]
 
-    image = PIL.Image.open(image_path)
-
-    word_list = None
-    with open(word_list_path, encoding="UTF-8") as file:
-        word_list = file.read().split("\n")
-
     with open("config.toml", "rb") as file:
         data = tomllib.load(file)
         pytesseract.pytesseract.tesseract_cmd = data["tesseract"]["command"]
@@ -30,10 +23,10 @@ def main():
 
     view = View(root)
     solver = Solver(Pather())
-    solver.set_image(image)
-    solver.word_list = word_list
 
-    Controller(solver, view)
+    controller = Controller(solver, view)
+    controller.load_word_list(word_list_path)
+    controller.load_image(image_path)
 
     root.mainloop()
 

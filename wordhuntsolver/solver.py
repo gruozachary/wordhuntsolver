@@ -29,6 +29,8 @@ class Solver:
         self._pather.character_centres = self._ocr_image.get_character_centres()
 
     def get_image(self) -> Image:
+        """Returns the image being solved"""
+
         return self._image
 
     def _generate(self) -> Generator[tuple[str, Image], None, None]:
@@ -37,10 +39,14 @@ class Solver:
         word_paths.reverse()
 
         drawn_words = set()
-        for word_path in word_paths:
-            if not word_path.word in drawn_words:
-                yield (word_path.word, self._pather.draw_path(word_path))
-                drawn_words.add(word_path.word)
+
+        def generator():
+            for word_path in word_paths:
+                if not word_path.word in drawn_words:
+                    yield (word_path.word, self._pather.draw_path(word_path))
+                    drawn_words.add(word_path.word)
+
+        return generator()
 
     def solve(self):
         """Solves the game"""
