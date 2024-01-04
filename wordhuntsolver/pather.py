@@ -22,7 +22,6 @@ class Pather:
         image = self.image.copy()
         draw = PIL.ImageDraw.ImageDraw(image)
 
-        print(path.word)
         for (x_0, y_0), (x_1, y_1) in pairwise(path.cartesian_path):
             draw.line([self.character_centres[y_0][x_0],
                        self.character_centres[y_1][x_1]], width=5, fill="red")

@@ -12,17 +12,17 @@ class Controller:
 
     solver: Solver
     view: View
-    drawn_images: Generator[PIL.Image.Image, None, None]
+    drawn_images: Generator[tuple[str, PIL.Image.Image], None, None]
 
     def __init__(self, solver: Solver, view: View):
         self.solver = solver
         self.view = view
         self.drawn_images = solver.drawn_paths()
 
-        self.view.set_image(self.solver.image)
+        self.view.set_image(self.solver.image, "")
         self.view.on_next(self._load_next)
 
     def _load_next(self):
-        next_image = next(self.drawn_images)
+        (word, next_image) = next(self.drawn_images)
 
-        self.view.set_image(next_image)
+        self.view.set_image(next_image, word)

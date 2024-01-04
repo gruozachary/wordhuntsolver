@@ -21,7 +21,7 @@ class Solver:
         self.ocr_image = OCRImage(image)
         self.pather = Pather(self.ocr_image.get_character_centres(), image)
 
-    def drawn_paths(self) -> Generator[PIL.Image.Image, None, None]:
+    def drawn_paths(self) -> Generator[tuple[str, PIL.Image.Image], None, None]:
         """A generator that yields the drawn path images"""
 
         word_paths = practicallan.solve(self.word_list, self.ocr_image.get_chars())
@@ -31,5 +31,5 @@ class Solver:
         drawn_words = set()
         for word_path in word_paths:
             if not word_path.word in drawn_words:
-                yield self.pather.draw_path(word_path)
+                yield (word_path.word, self.pather.draw_path(word_path))
                 drawn_words.add(word_path.word)
