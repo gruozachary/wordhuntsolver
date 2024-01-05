@@ -15,7 +15,9 @@ class Controller:
         self._solver = solver
         self._view = view
 
-        self._view.on_next(self._load_next)
+        self._view.on_next = self._load_next
+        self._view.on_new_image_path = self.load_image
+        self._view.on_new_wordlist_path = self.load_word_list
 
     def _load_next(self):
         pathed_images = self._solver.get_pathed_images()
