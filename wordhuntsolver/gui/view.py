@@ -15,6 +15,9 @@ class View:
     word_label: tk.Label
     set_wordlist_button: tk.Button
     set_image_button: tk.Button
+    status_label: tk.Label
+
+    status_text: tk.StringVar
 
     on_next: Callable[[], None] = lambda: None
     on_new_wordlist_path: Callable[[str], None] = lambda _: None
@@ -27,9 +30,15 @@ class View:
 
         root.geometry("500x500")
 
+        self.status_text = tk.StringVar()
+
         self.photo_label = tk.Label(root)
-        self.next_button = tk.Button(root, text="Next", command=self._on_next)
         self.word_label = tk.Label(root)
+        self.next_button = tk.Button(
+            root,
+            text="Next",
+            command=self._on_next
+        )
         self.set_wordlist_button = tk.Button(
             root, text="Set word list",
             command=self._on_new_wordlist_path
@@ -39,8 +48,11 @@ class View:
             text="Set image",
             command=self._on_new_image_path
         )
+        self.status_label = tk.Label(root, textvariable=self.status_text)
+
         self.photo_label.pack()
         self.word_label.pack()
+        self.status_label.pack()
         self.next_button.pack()
         self.set_wordlist_button.pack()
         self.set_image_button.pack()
@@ -55,6 +67,16 @@ class View:
         self.word_label.config(text=word)
         self.photo_label.config(image=photo)
         self.image_ref = photo
+
+    def set_status(self, text: str):
+        """Sets the status displayed to the user"""
+
+        self.status_text.set(text)
+
+    def clear_status(self):
+        """Clears status displayed to user"""
+        
+        self.set_status("")
 
     def _on_next(self):
         self.on_next()
