@@ -14,6 +14,10 @@ class LabelHandler(tk.Label, logging.Handler):
 
     def emit(self, record: logging.LogRecord):
         formatted_record = self.format(record)
+        match record.levelno:
+            case 20: self["fg"] = "green"
+            case 30: self["fg"] = "yellow"
+            case 40: self["fg"] = "red"
         self["text"] = formatted_record
 
 
@@ -79,16 +83,6 @@ class View(tk.Tk):
         self._word_label.config(text=word)
         self._photo_label.config(image=photo)
         self._image_ref = photo
-
-    def set_status(self, text: str):
-        """Sets the status displayed to the user"""
-
-        self._status_text.set(text)
-
-    def clear_status(self):
-        """Clears status displayed to user"""
-
-        self.set_status("")
 
     def _on_next(self):
         self.on_next()
