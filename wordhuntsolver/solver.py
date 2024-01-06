@@ -48,6 +48,13 @@ class Solver:
 
         return generator()
 
+    def is_loaded(self) -> bool:
+        """Returns true if an image is loaded"""
+
+        if hasattr(self, "_image"):
+            return True
+        return False
+
     def solve(self):
         """Solves the game"""
 

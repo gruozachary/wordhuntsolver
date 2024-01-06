@@ -27,9 +27,12 @@ class Controller:
     def _load_next(self):
         pathed_images = self._solver.get_pathed_images()
 
-        (word, next_image) = next(pathed_images)
+        try:
+            (word, next_image) = next(pathed_images)
+            self._view.set_image(next_image, word)
+        except StopIteration:
+            self._logger.warning("Words exhausted!")
 
-        self._view.set_image(next_image, word)
 
     def load_image(self, image_path: str):
         """Loads and processes an image"""
@@ -55,6 +58,9 @@ class Controller:
         try:
             with open(word_list_path, encoding="UTF-8") as file:
                 self._solver.word_list = file.read().split("\n")
+
+            if self._solver.is_loaded():
+                self._solver.solve()
 
             self._logger.info("Word list loaded.")
         except FileNotFoundError:
