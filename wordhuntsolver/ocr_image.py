@@ -4,6 +4,9 @@ from itertools import batched
 from PIL.Image import Image
 import pytesseract
 
+class OCRParseError(Exception):
+    """Exception raised when OCR could not parse image"""
+
 class OCRImage:
     """Contains functionality to extact data using OCR"""
 
@@ -25,12 +28,15 @@ class OCRImage:
         )
         _, height = self.image.size
 
-        centres = []
-        for i in range(16):
-            centre = ((data["left"][i] + data["right"][i]) / 2,
-                      height - (data["top"][i] + data["bottom"][i]) / 2)
-            centres.append(centre)
-        return [list(x) for x in batched(centres, n=4)]
+        try:
+            centres = []
+            for i in range(16):
+                centre = ((data["left"][i] + data["right"][i]) / 2,
+                          height - (data["top"][i] + data["bottom"][i]) / 2)
+                centres.append(centre)
+            return [list(x) for x in batched(centres, n=4)]
+        except Exception as exc:
+            raise OCRParseError from exc
 
     def get_chars(self) -> list[list[str]]:
         """Returns the characters in the image"""

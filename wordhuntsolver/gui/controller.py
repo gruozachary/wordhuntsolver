@@ -3,6 +3,7 @@
 import logging
 import PIL.Image
 from wordhuntsolver.gui.view import View
+from wordhuntsolver.ocr_image import OCRParseError
 from wordhuntsolver.solver import Solver
 
 class Controller:
@@ -44,7 +45,9 @@ class Controller:
         except AttributeError:
             self._logger.error("File not found!")
         except PIL.UnidentifiedImageError:
-            self._logger.error("Invalid image!")
+            self._logger.error("Invalid image format!")
+        except OCRParseError:
+            self._logger.error("Unable to parse image!")
 
     def load_word_list(self, word_list_path):
         """Loads the word list"""
