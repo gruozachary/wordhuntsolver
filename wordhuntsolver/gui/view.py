@@ -3,8 +3,19 @@
 from typing import Callable
 import tkinter as tk
 from tkinter import filedialog
+import logging
 from PIL.Image import Image
 from PIL.ImageTk import PhotoImage
+
+class LabelHandler(tk.Label, logging.Handler):
+    def __init__(self, *args, **kwargs):
+        logging.Handler.__init__(self, level=logging.DEBUG)
+        tk.Label.__init__(self, *args, **kwargs)
+
+    def emit(self, record: logging.LogRecord):
+        formatted_record = self.format(record)
+        self["text"] = formatted_record
+
 
 class View(tk.Tk):
     """The MVC view for the GUI"""
@@ -14,9 +25,8 @@ class View(tk.Tk):
     _word_label: tk.Label
     _set_wordlist_button: tk.Button
     _set_image_button: tk.Button
-    _status_label: tk.Label
+    _status_label: LabelHandler
 
-    _status_text: tk.StringVar
     _image_ref: PhotoImage
 
     on_next: Callable[[], None] = lambda: None
@@ -25,8 +35,6 @@ class View(tk.Tk):
 
     def __init__(self):
         super().__init__()
-
-        self._status_text = tk.StringVar()
 
         self._photo_label = tk.Label(self)
         self._word_label = tk.Label(self)
@@ -45,7 +53,7 @@ class View(tk.Tk):
             text="Set image",
             command=self._on_new_image_path
         )
-        self._status_label = tk.Label(self, textvariable=self._status_text)
+        self._status_label = LabelHandler(self)
 
         self._photo_label.pack()
         self._word_label.pack()
@@ -53,6 +61,13 @@ class View(tk.Tk):
         self._next_button.pack()
         self._set_wordlist_button.pack()
         self._set_image_button.pack()
+
+        self._init_logger()
+
+    def _init_logger(self):
+        logger = logging.getLogger("View")
+        logger.setLevel(logging.INFO)
+        logger.addHandler(self._status_label)
 
     def set_image(self, image: Image, word: str):
         """Changes the image displayed on the GUI"""

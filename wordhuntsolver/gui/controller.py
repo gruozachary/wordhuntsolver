@@ -1,7 +1,7 @@
 """Contains "Controller" class for GUI"""
 
 import PIL.Image
-
+import logging
 from wordhuntsolver.gui.view import View
 from wordhuntsolver.solver import Solver
 
@@ -35,8 +35,12 @@ class Controller:
         self._solver.set_image(image)
         self._solver.solve()
 
+        logging.getLogger("View").info("Image loaded")
+
     def load_word_list(self, word_list_path):
         """Loads the word list"""
 
         with open(word_list_path, encoding="UTF-8") as file:
             self._solver.word_list = file.read().split("\n")
+
+        logging.getLogger("View").info("Word list loaded")
