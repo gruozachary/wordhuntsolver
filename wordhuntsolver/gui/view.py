@@ -59,12 +59,12 @@ class View(tk.Tk):
         )
         self._status_label = LabelHandler(self)
 
-        self._photo_label.pack()
-        self._word_label.pack()
-        self._status_label.pack()
-        self._next_button.pack()
-        self._set_wordlist_button.pack()
-        self._set_image_button.pack()
+        self._photo_label.grid(column=1, row=0, rowspan=3)
+        self._word_label.grid(column=1, row=3)
+        self._status_label.grid(column=1, row=4)
+        self._next_button.grid(column=0, row=0, sticky="ew")
+        self._set_wordlist_button.grid(column=0, row=1, sticky="ew")
+        self._set_image_button.grid(column=0, row=2, sticky="ew")
 
         self._init_logger()
 
