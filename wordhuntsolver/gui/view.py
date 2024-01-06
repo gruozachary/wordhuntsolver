@@ -6,7 +6,7 @@ from tkinter import filedialog
 from PIL.Image import Image
 from PIL.ImageTk import PhotoImage
 
-class View:
+class View(tk.Tk):
     """The MVC view for the GUI"""
 
     root: tk.Tk
@@ -25,30 +25,31 @@ class View:
 
     image_ref: PhotoImage
 
-    def __init__(self, root: tk.Tk):
-        self.root = root
+    def __init__(self):
+        super().__init__()
 
-        root.geometry("500x500")
+        self.geometry("500x500")
 
         self.status_text = tk.StringVar()
 
-        self.photo_label = tk.Label(root)
-        self.word_label = tk.Label(root)
+        self.photo_label = tk.Label(self)
+        self.word_label = tk.Label(self)
         self.next_button = tk.Button(
-            root,
+            self,
             text="Next",
             command=self._on_next
         )
         self.set_wordlist_button = tk.Button(
-            root, text="Set word list",
+            self,
+            text="Set word list",
             command=self._on_new_wordlist_path
         )
         self.set_image_button = tk.Button(
-            root,
+            self,
             text="Set image",
             command=self._on_new_image_path
         )
-        self.status_label = tk.Label(root, textvariable=self.status_text)
+        self.status_label = tk.Label(self, textvariable=self.status_text)
 
         self.photo_label.pack()
         self.word_label.pack()
@@ -75,7 +76,7 @@ class View:
 
     def clear_status(self):
         """Clears status displayed to user"""
-        
+
         self.set_status("")
 
     def _on_next(self):

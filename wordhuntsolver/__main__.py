@@ -2,7 +2,6 @@
 
 import sys
 import tomllib
-import tkinter as tk
 import pytesseract
 from wordhuntsolver.gui.controller import Controller
 from wordhuntsolver.gui.view import View
@@ -19,16 +18,14 @@ def main():
         data = tomllib.load(file)
         pytesseract.pytesseract.tesseract_cmd = data["tesseract"]["command"]
 
-    root = tk.Tk()
-
-    view = View(root)
+    view = View()
     solver = Solver(Pather())
 
     controller = Controller(solver, view)
     controller.load_word_list(word_list_path)
     controller.load_image(image_path)
 
-    root.mainloop()
+    view.mainloop()
 
 
 if __name__ == "__main__":
