@@ -2,3 +2,4 @@
 env/
 build/
 wordhuntsolver.egg-info/
+word_list.txt

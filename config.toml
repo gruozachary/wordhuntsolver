@@ -1,2 +1,5 @@
 [tesseract]
 command = "tesseract"
+
+[word_list]
+default_path = "word_list.txt"
