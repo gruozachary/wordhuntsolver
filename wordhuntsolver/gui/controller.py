@@ -4,7 +4,7 @@ import logging
 import PIL.Image
 from wordhuntsolver.gui.view import View
 from wordhuntsolver.ocr_image import OCRParseError
-from wordhuntsolver.solver import Solver
+from wordhuntsolver.solver import NoImageError, NoWordListError, Solver
 
 class Controller:
     """The MVC controller for the GUI"""
@@ -25,13 +25,17 @@ class Controller:
         self._logger = logging.getLogger("View")
 
     def _load_next(self):
-        pathed_images = self._solver.get_pathed_images()
 
         try:
+            pathed_images = self._solver.get_pathed_images()
             (word, next_image) = next(pathed_images)
             self._view.set_image(next_image, word)
         except StopIteration:
             self._logger.warning("Words exhausted!")
+        except NoWordListError:
+            self._logger.error("No word list loaded!")
+        except NoImageError:
+            self._logger.error("No image loaded!")
 
 
     def load_image(self, image_path: str):
@@ -46,7 +50,9 @@ class Controller:
 
             self._logger.info("Image loaded.")
         except AttributeError:
-            self._logger.error("File not found!")
+            self._logger.error("Image file not found!")
+        except NoWordListError:
+            self._logger.error("Word list not found!")
         except PIL.UnidentifiedImageError:
             self._logger.error("Invalid image format!")
         except OCRParseError:
@@ -64,6 +70,6 @@ class Controller:
 
             self._logger.info("Word list loaded.")
         except FileNotFoundError:
-            self._logger.error("File not found!")
+            self._logger.error("Word list file not found!")
         except UnicodeDecodeError:
             self._logger.error("Invalid file!")

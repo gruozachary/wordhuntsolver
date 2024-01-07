@@ -6,6 +6,11 @@ import practicallan
 from wordhuntsolver.ocr_image import OCRImage
 from wordhuntsolver.pather import Pather
 
+class NoWordListError(Exception):
+    """Error raised when no word list is present"""
+
+class NoImageError(Exception):
+    """Error raised when no image is loaded"""
 
 class Solver:
     """A class that can solve the "Word Hunt" game"""
@@ -34,6 +39,12 @@ class Solver:
         return self._image
 
     def _generate(self) -> Generator[tuple[str, Image], None, None]:
+        if not hasattr(self, "word_list"):
+            raise NoWordListError
+
+        if not hasattr(self, "_image"):
+            raise NoImageError
+
         word_paths = practicallan.solve(self.word_list, self._ocr_image.get_chars())
         word_paths.sort(key=lambda x: len(x.word))
         word_paths.reverse()
