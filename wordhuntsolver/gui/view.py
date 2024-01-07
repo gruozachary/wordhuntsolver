@@ -4,6 +4,7 @@ from typing import Callable
 import tkinter as tk
 from tkinter import filedialog
 import logging
+import PIL.Image
 from PIL.Image import Image
 from PIL.ImageTk import PhotoImage
 
@@ -40,7 +41,11 @@ class View(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self._photo_label = tk.Label(self)
+        self.geometry("400x300")
+
+        self._image_ref = PhotoImage(PIL.Image.new("RGB", (250, 250), color="white"))
+
+        self._photo_label = tk.Label(self, image=self._image_ref)
         self._word_label = tk.Label(self)
         self._next_button = tk.Button(
             self,
