@@ -1,6 +1,6 @@
 [project]
 name = "wordhuntsolver"
-version = "0.0.1"
+version = "1.0.0"
 authors = [
   { name="Thomas Zachary", email="gruozachary@proton.me" },
 ]
