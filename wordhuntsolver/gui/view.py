@@ -25,6 +25,9 @@ class LabelHandler(tk.Label, logging.Handler):
 class View(tk.Tk):
     """The MVC view for the GUI"""
 
+    _IMAGE_FILE_TYPES = [("Image files", "*.png *.jpg *.jpeg *.bmp")]
+    _WORD_LIST_FILE_TYPES = [("Text files", "*.txt")]
+
     _photo_label: tk.Label
     _next_button: tk.Button
     _word_label: tk.Label
@@ -94,12 +97,14 @@ class View(tk.Tk):
 
     def _on_new_wordlist_path(self):
         file_path = filedialog.askopenfilename(
+            filetypes=self._WORD_LIST_FILE_TYPES,
             title="Choose a wordlist",
         )
         self.on_new_wordlist_path(file_path)
 
     def _on_new_image_path(self):
         file_path = filedialog.askopenfilename(
+            filetypes=self._IMAGE_FILE_TYPES,
             title="Choose an image",
         )
         self.on_new_image_path(file_path)
