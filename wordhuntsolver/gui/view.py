@@ -45,6 +45,7 @@ class View(tk.Tk):
         super().__init__()
 
         self.geometry("400x300")
+        self.title("wordhuntsolver")
 
         self._image_ref = PhotoImage(PIL.Image.new("RGB", (250, 250), color="white"))
 
